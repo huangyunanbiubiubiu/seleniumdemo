@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+    <project default="baidu" name="0326test">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../软件测试基础/eclipse/eclipse/eclipse/"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="0326test.classpath">
+    	<pathelement location="bin"/>
+    	        <pathelement location="Tools/selenium-server-standalone-2.53.0.jar"/>
+    	    </path>
+    	    <target name="init">
+    	        <mkdir dir="bin"/>
+    	        <copy includeemptydirs="false" todir="bin">
+    	            <fileset dir="src">
+    	                <exclude name="**/*.launch"/>
+    	                <exclude name="**/*.java"/>
+    	            </fileset>
+    	        </copy>
+    	    </target>
+    	    <target depends="init" name="build-project">
+    	    	
+    	        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+    	        	<src path="src"/>
+    	            <classpath refid="selenim1.classpath"/>
+    	        </javac>
+    	    </target>
+    	    <target  name="init-eclipse-compiler">
+    	        <copy todir="${ant.library.dir}">
+    	            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+    	        </copy>
+    	        <unzip dest="${ant.library.dir}">
+    	            <patternset includes="jdtCompilerAdapter.jar"/>
+    	            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+    	        </unzip>
+    	    </target>
+    	    <target  name="build-eclipse-compiler" depends="init-eclipse-compiler">
+    	    	<echo>编译成功
+    	    	</echo>
+    	    	<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+    	    	 
+    	    </target>
+    	    <target name="baidu" depends="build-eclipse-compiler">
+    	       <echo>运行成功
+    	       </echo>
+    	    	<java classname="baidu.baidu" failonerror="true" fork="yes">
+    	        	
+    	        	<classpath refid="selenim1.classpath"/>
+    	        </java>
+    	    </target>
+    	</project>
